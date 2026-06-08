@@ -125,3 +125,64 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Wedding Floral Animations & Themes */
+@keyframes fall {
+  0% {
+    transform: translateY(-10px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+
+.animate-fall {
+  animation: fall 10s linear infinite;
+}
+
+.animate-sway {
+  animation: sway 4s ease-in-out infinite alternate;
+}
+
+/* Floral Borders and Wedding-themed decorative styles */
+.floral-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(225, 175, 185, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(225, 175, 185, 0.15);
+}
+
+.dark .floral-card {
+  background: rgba(30, 20, 22, 0.6);
+  border: 1px solid rgba(185, 115, 125, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.floral-text-gradient {
+  background: linear-gradient(135deg, oklch(0.74 0.08 10), oklch(0.6 0.15 350));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.floral-border-accent {
+  border-image: linear-gradient(to right, #e1afb9, #f7d6c8, #e1afb9) 1;
+}
+
