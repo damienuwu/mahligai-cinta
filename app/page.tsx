@@ -58,12 +58,20 @@ const akadIlmuList = [
     category: 'Akad Ilmu 2',
     topics: [
       {
-        title: 'Rukun & Syarat',
-        type: 'Infografik',
+        title: 'Rukun Nikah & Syarat Sah Nikah',
+        type: 'Video Plotagon',
         badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
-        description: 'Membincangkan 5 rukun nikah (bakal suami, bakal isteri, wali, 2 saksi, & sighah) beserta syarat sahnya.',
-        imageUrl: '/assets/infographics/syarat rukun nikah.jpg',
-        tag: 'Infographic'
+        description: 'Membincangkan 5 rukun nikah (bakal suami, bakal isteri, wali, 2 saksi, & sighah) beserta syarat sahnya menerusi video animasi Plotagon.',
+        videoUrl: 'https://youtu.be/Gtk8hmeFOLw',
+        tag: 'Plotagon Video'
+      },
+      {
+        title: 'Peta Minda : Rukun dan Syarat Sah Nikah',
+        type: 'Peta Minda',
+        badgeColor: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20',
+        description: 'Visual peta minda yang ringkas dan padat menghuraikan rukun perkahwinan dan syarat-syarat sahnya.',
+        imageUrl: '/assets/infographics/peta minda rukun dan syarat sah nikah.jpg',
+        tag: 'Mind Map'
       },
       {
         title: 'Golongan Haram Dikahwini',
@@ -418,7 +426,7 @@ export default function App() {
                                     : 'text-muted-foreground hover:text-foreground hover:bg-secondary/25'
                                 }`}
                               >
-                                {ch.title.split(' : ')[0]}
+                                {ch.title === 'Peta Minda : Rukun dan Syarat Sah Nikah' ? ch.title : ch.title.split(' : ')[0]}
                               </button>
                             );
                           })}
@@ -524,7 +532,7 @@ export default function App() {
                                       : 'text-muted-foreground hover:text-foreground'
                                   }`}
                                 >
-                                  {ch.title.split(' : ')[0]}
+                                  {ch.title === 'Peta Minda : Rukun dan Syarat Sah Nikah' ? ch.title : ch.title.split(' : ')[0]}
                                 </button>
                               );
                             })}
@@ -873,7 +881,7 @@ function TopicDetailPage({ topicIndex, onNavigate, onBack }: TopicDetailPageProp
         </div>
 
         <div className="p-6 md:p-8 flex-1 flex flex-col justify-center bg-muted/5 relative z-10">
-          <div className="relative border-2 border-dashed border-border/80 rounded-2xl bg-card/65 backdrop-blur-md overflow-hidden min-h-[380px] flex flex-col items-center justify-center p-4">
+          <div className="relative border-2 border-dashed border-border/80 rounded-2xl bg-card/65 backdrop-blur-md overflow-hidden min-h-[380px] flex flex-col items-center justify-center p-4 gap-6">
             
             {currentChapter.videoUrl && (() => {
               const youtubeRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
