@@ -1,20 +1,43 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X, Video, BookOpen, Gamepad2, Home } from 'lucide-react';
+import { 
+  Menu, 
+  X, 
+  Video, 
+  BookOpen, 
+  Home, 
+  Users, 
+  GraduationCap, 
+  Heart, 
+  Award, 
+  ChevronLeft, 
+  ChevronRight, 
+  ExternalLink, 
+  ClipboardList, 
+  UserCheck, 
+  Play, 
+  Sparkles,
+  Info,
+  CheckCircle2,
+  FileText
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'videos', label: 'Video Learning', icon: Video },
-    { id: 'resources', label: 'My Notes', icon: BookOpen },
-    { id: 'exercise', label: 'Exercise', icon: Gamepad2 },
+    { id: 'isi-kandungan', label: 'Isi Kandungan', icon: BookOpen },
+    { id: 'nikah-edu', label: 'Nikah Edu & Kuiz', icon: ClipboardList },
+    { id: 'tentang-kami', label: 'Tentang Kami', icon: Users },
   ];
 
   const handleNavClick = (pageId: string) => {
@@ -23,14 +46,42 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-300">
       {/* Sidebar Navigation */}
-      <aside className="hidden md:flex w-64 flex-col bg-card border-r border-border p-6 fixed h-screen">
-        <div className="mb-12">
-          <h1 className="font-serif text-3xl font-bold text-primary">Mahligai Cinta</h1>
-          <p className="text-sm text-muted-foreground mt-1">Wedding Education</p>
+      <aside 
+        className={`hidden md:flex flex-col bg-card border-r border-border fixed h-screen z-20 transition-all duration-300 ${
+          isSidebarCollapsed ? 'w-20 p-4' : 'w-72 p-6'
+        }`}
+      >
+        {/* Collapse Toggle Button */}
+        <button
+          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          className="absolute -right-3 top-6 h-6 w-6 rounded-full border border-border bg-card shadow-sm hidden md:flex items-center justify-center hover:bg-accent text-muted-foreground hover:text-foreground z-30 transition-transform active:scale-95"
+          title={isSidebarCollapsed ? "Kembangkan Menu" : "Kecilkan Menu"}
+        >
+          {isSidebarCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+        </button>
+
+        {/* Logo Section */}
+        <div className={`mb-10 transition-all duration-300 ${isSidebarCollapsed ? 'text-center' : ''}`}>
+          <div className={`flex items-center gap-2 mb-2 ${isSidebarCollapsed ? 'justify-center' : ''}`}>
+            <span className="p-1.5 bg-primary/10 rounded-xl text-primary inline-flex items-center justify-center">
+              <Heart className="w-5 h-5 fill-primary/20" />
+            </span>
+            {!isSidebarCollapsed && (
+              <h1 className="font-serif text-xl font-bold tracking-tight text-primary animate-fade-in whitespace-nowrap">
+                Mahligai Cinta
+              </h1>
+            )}
+          </div>
+          {!isSidebarCollapsed && (
+            <p className="text-[10px] text-muted-foreground px-1 animate-fade-in whitespace-nowrap">
+              Pendidikan Perkahwinan & Fiqh
+            </p>
+          )}
         </div>
         
+        {/* Navigation Items */}
         <nav className="flex flex-col gap-2 flex-1">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -38,47 +89,72 @@ export default function App() {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                title={isSidebarCollapsed ? item.label : undefined}
+                className={`flex items-center rounded-xl transition-all duration-200 ${
+                  isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3'
+                } ${
                   currentPage === item.id
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-foreground hover:bg-secondary'
+                    ? 'bg-primary text-primary-foreground shadow-md shadow-primary/10 font-medium'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                 }`}
               >
-                <Icon className="w-5 h-5" />
-                <span className="text-sm font-medium">{item.label}</span>
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {!isSidebarCollapsed && (
+                  <span className="text-sm font-medium animate-fade-in whitespace-nowrap">{item.label}</span>
+                )}
               </button>
             );
           })}
         </nav>
+
+        {/* Bottom Info Box */}
+        {!isSidebarCollapsed && (
+          <div className="mt-auto p-4 bg-muted/30 rounded-2xl border border-border/50 animate-fade-in">
+            <div className="flex items-start gap-2.5">
+              <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-xs font-semibold">PAK21 & Didik Hibur</p>
+                <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
+                  Kaedah interaktif memudahkan pemahaman sukatan Fiqh Perkahwinan.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </aside>
 
       {/* Mobile Menu */}
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild className="md:hidden fixed top-4 left-4 z-40">
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="shadow-md">
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-64">
+        <SheetContent side="left" className="w-72 p-6 flex flex-col">
           <div className="mb-8 pt-4">
-            <h1 className="font-serif text-2xl font-bold text-primary">Mahligai Cinta</h1>
-            <p className="text-xs text-muted-foreground mt-1">Wedding Education</p>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="p-1.5 bg-primary/10 rounded-lg text-primary">
+                <Heart className="w-6 h-6 fill-primary/20" />
+              </span>
+              <h1 className="font-serif text-2xl font-bold text-primary">Mahligai Cinta</h1>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">Pendidikan Perkahwinan & Fiqh Interaktif</p>
           </div>
-          <nav className="flex flex-col gap-2">
+          <nav className="flex flex-col gap-1.5 flex-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
                     currentPage === item.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-foreground hover:bg-secondary'
+                      ? 'bg-primary text-primary-foreground font-semibold'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="text-sm font-medium">{item.label}</span>
+                  <span className="text-sm">{item.label}</span>
                 </button>
               );
             })}
@@ -86,210 +162,978 @@ export default function App() {
         </SheetContent>
       </Sheet>
 
-      {/* Main Content */}
-      <main className="flex-1 md:ml-64">
-        {/* Mobile Header */}
-        <div className="md:hidden pt-16 px-4 pb-4 text-center">
-          <h1 className="font-serif text-3xl font-bold text-primary">Mahligai Cinta</h1>
+      {/* Main Content Area */}
+      <main 
+        className={`flex-1 min-h-screen bg-gradient-to-br from-background via-background/98 to-primary/5 transition-all duration-300 ${
+          isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'
+        }`}
+      >
+        {/* Mobile Header Spacer */}
+        <div className="md:hidden pt-16 px-4 pb-4 text-center border-b border-border/40 bg-card/50 backdrop-blur">
+          <h1 className="font-serif text-2xl font-bold text-primary">Mahligai Cinta</h1>
         </div>
 
-        {/* Page Content */}
-        <div className="p-4 md:p-8">
+        {/* Page Container */}
+        <div className="p-6 md:p-10 max-w-7xl mx-auto w-full">
           {currentPage === 'home' && <HomePage />}
-          {currentPage === 'videos' && <VideoLearningPage />}
-          {currentPage === 'resources' && <ResourcesPage />}
-          {currentPage === 'exercise' && <ExercisePage />}
+          {currentPage === 'isi-kandungan' && <IsiKandunganPage />}
+          {currentPage === 'nikah-edu' && <NikahEduPage />}
+          {currentPage === 'tentang-kami' && <TentangKamiPage />}
         </div>
       </main>
     </div>
   );
 }
 
+// ----------------------------------------------------
+// HOME PAGE COMPONENT
+// ----------------------------------------------------
 function HomePage() {
-  return (
-    <div className="max-w-4xl mx-auto w-full">
-      <div className="mb-8 text-center">
-        <h2 className="font-serif text-4xl font-bold text-foreground mb-2">Welcome to Mahligai Cinta</h2>
-        <p className="text-lg text-muted-foreground">Empowering couples through comprehensive wedding and marriage education</p>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="p-8 border-2 border-primary hover:shadow-lg transition-shadow text-center">
-          <h3 className="font-serif text-2xl font-bold text-primary mb-4">About Us</h3>
-          <p className="text-foreground leading-relaxed mb-6">
-            Mahligai Cinta is dedicated to providing comprehensive, culturally-sensitive education to help couples prepare for their wedding and marriage journey. We believe in empowering individuals with knowledge and skills to create lasting, meaningful relationships.
-          </p>
-          <div className="space-y-2 text-sm text-muted-foreground flex flex-col items-center">
-            <p>✓ Expert-curated content</p>
-            <p>✓ Interactive learning experiences</p>
-            <p>✓ Community support</p>
-          </div>
-        </Card>
-
-        <Card className="p-8 border-2 border-accent hover:shadow-lg transition-shadow text-center">
-          <h3 className="font-serif text-2xl font-bold text-accent mb-4">Our Objective</h3>
-          <p className="text-foreground leading-relaxed mb-6">
-            Our mission is to equip couples with the knowledge, skills, and confidence they need to navigate their wedding planning and build strong, healthy marriages.
-          </p>
-          <div className="space-y-2 text-sm text-muted-foreground flex flex-col items-center">
-            <p>✓ Holistic preparation</p>
-            <p>✓ Cultural awareness</p>
-            <p>✓ Long-term relationship success</p>
-          </div>
-        </Card>
-      </div>
-
-      <Card className="mt-8 p-8 bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20 text-center">
-        <h3 className="font-serif text-2xl font-bold text-primary mb-4">Getting Started</h3>
-        <p className="text-foreground mb-6">
-          Begin your learning journey by exploring our video library, accessing educational resources, and engaging with interactive exercises. Each section is designed to build upon the previous one.
-        </p>
-        <div className="flex justify-center">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            Start Learning Today
-          </Button>
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-function VideoLearningPage() {
-  const videos = [
+  const objektifList = [
     {
       id: 1,
-      title: 'Theory',
-      description: 'Learn the fundamental concepts and theoretical foundations of marriage and relationships.',
-      type: 'Educational Content',
+      text: 'Meningkatkan kefahaman pelajar terhadap teori dan amali fiqh melalui video animasi.',
+      icon: Video,
+      color: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20'
     },
     {
       id: 2,
-      title: 'Storytelling & Animation',
-      subtitle: 'Contoh Situasi',
-      description: 'Explore real-life scenarios and examples through engaging storytelling and animated illustrations.',
-      type: 'Case Studies',
+      text: 'Mengaplikasikan pendekatan PAK21 berteraskan didik hibur dalam pembelajaran.',
+      icon: Sparkles,
+      color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     },
     {
       id: 3,
-      title: 'Summary',
-      subtitle: 'Nota Ringkas',
-      description: 'Quick reference guides and summaries of key concepts covered in previous sections.',
-      type: 'Reference',
+      text: 'Menggabungkan inovasi teknologi bagi memperkukuh pengajaran dan pembelajaran subjek fiqh.',
+      icon: Award,
+      color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+    }
+  ];
+
+  const sasaranList = [
+    {
+      title: 'Pelajar Tingkatan 5',
+      desc: 'Membantu memudahkan persediaan menghadapi peperiksaan SPM bagi subjek Pendidikan Islam.',
+      icon: GraduationCap,
+      color: 'from-blue-500/10 to-indigo-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400'
     },
+    {
+      title: 'Guru Pendidikan Islam',
+      desc: 'Sebagai bahan bantu mengajar (BBM) interaktif bertemakan didik hibur & PAK21.',
+      icon: BookOpen,
+      color: 'from-emerald-500/10 to-teal-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+    },
+    {
+      title: 'Pasangan Muda',
+      desc: 'Bakal pengantin yang ingin memperkukuh kefahaman asas tentang hukum & tuntutan perkahwinan.',
+      icon: Heart,
+      color: 'from-pink-500/10 to-rose-500/10 border-pink-500/20 text-pink-600 dark:text-pink-400'
+    }
   ];
 
   return (
-    <div className="max-w-4xl mx-auto w-full">
-      <div className="mb-8 text-center">
-        <h2 className="font-serif text-4xl font-bold text-foreground mb-2">Video Learning</h2>
-        <p className="text-lg text-muted-foreground">Master essential concepts through our comprehensive video library</p>
+    <div className="space-y-12 animate-fade-in">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-accent/5 to-background border border-primary/20 p-8 md:p-12 text-center shadow-lg">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/15 rounded-full blur-2xl -z-10" />
+        
+        <Badge className="mb-4 bg-primary/15 text-primary hover:bg-primary/25 border-primary/30 py-1 px-3 text-xs rounded-full">
+          Portal Pendidikan Fiqh Perkahwinan
+        </Badge>
+        <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight">
+          Selamat Datang ke <span className="text-primary">Mahligai Cinta</span>
+        </h2>
+        <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base leading-relaxed">
+          Platform pembelajaran digital interaktif yang menggabungkan elemen multimedia, infografik, dan komik kreatif untuk menguasai kefahaman Fiqh Perkahwinan dengan cara yang menyeronokkan.
+        </p>
       </div>
 
+      {/* Objektif Section */}
       <div className="space-y-6">
-        {videos.map((video) => (
-          <Card key={video.id} className="overflow-hidden border border-border hover:border-primary transition-colors">
-            <div className="flex flex-col md:flex-row">
-              <div className="md:w-48 h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                <Video className="w-16 h-16 text-primary/40" />
-              </div>
-              <div className="flex-1 p-6 flex flex-col justify-center items-center text-center">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs font-semibold text-accent uppercase tracking-wider">{video.type}</span>
+        <div className="text-center md:text-left">
+          <h3 className="font-serif text-2xl md:text-3xl font-bold tracking-tight">Objektif Pembelajaran</h3>
+          <p className="text-sm text-muted-foreground mt-1">Tiga matlamat utama platform pendidikan Mahligai Cinta</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {objektifList.map((obj) => {
+            const Icon = obj.icon;
+            return (
+              <Card key={obj.id} className="p-6 border border-border/80 hover:border-primary/30 transition-all hover:shadow-md flex flex-col justify-between">
+                <div>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border mb-5 ${obj.color}`}>
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <p className="text-sm font-medium leading-relaxed text-foreground/90">
+                    {obj.text}
+                  </p>
                 </div>
-                <h3 className="font-serif text-2xl font-bold text-foreground mb-1">{video.title}</h3>
-                {video.subtitle && (
-                  <p className="text-sm text-muted-foreground mb-3">{video.subtitle}</p>
-                )}
-                <p className="text-foreground mb-4">{video.description}</p>
-                <Button className="w-fit bg-primary hover:bg-primary/90 text-primary-foreground">
-                  Watch Video
+                <div className="mt-4 text-xs font-bold text-muted-foreground/60">
+                  OBJEKTIF 0{obj.id}
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Sasaran Section */}
+      <div className="space-y-6">
+        <div className="text-center md:text-left">
+          <h3 className="font-serif text-2xl md:text-3xl font-bold tracking-tight">Golongan Sasaran</h3>
+          <p className="text-sm text-muted-foreground mt-1">Platform ini direka khas untuk memenuhi keperluan pembelajaran golongan berikut:</p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {sasaranList.map((sasaran, index) => {
+            const Icon = sasaran.icon;
+            return (
+              <Card key={index} className="overflow-hidden border border-border/60 hover:shadow-md transition-all">
+                <div className={`h-2 bg-gradient-to-r ${sasaran.color.includes('rose') ? 'from-pink-500 to-rose-500' : sasaran.color.includes('emerald') ? 'from-emerald-500 to-teal-500' : 'from-blue-500 to-indigo-500'}`} />
+                <div className="p-6 text-center">
+                  <div className="mx-auto w-12 h-12 rounded-full bg-secondary/80 flex items-center justify-center mb-4 text-primary">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h4 className="font-serif text-lg font-bold text-foreground mb-2">{sasaran.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{sasaran.desc}</p>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ----------------------------------------------------
+// ISI KANDUNGAN PAGE COMPONENT
+// ----------------------------------------------------
+function IsiKandunganPage() {
+  const [activeTab, setActiveTab] = useState(0);
+
+  // Comic State
+  const [comicPage, setComicPage] = useState(1);
+  const [comicImageError, setComicImageError] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
+  const totalComicPages = 4; // Mock 4 comic panels
+
+  const chapters = [
+    {
+      id: 0,
+      title: 'Perkara Asas : Makna & Dalil',
+      type: 'Video Powtoon',
+      badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
+      description: 'Menjelaskan definisi perkahwinan dari segi bahasa dan syarak beserta dalil pensyariatan naqli.',
+      videoUrl: '/assets/videos/makna_dalil.mp4',
+      placeholderBg: 'from-blue-500/20 to-indigo-500/20',
+      tag: 'Powtoon Video'
+    },
+    {
+      id: 1,
+      title: 'Hikmah Perkahwinan',
+      type: 'Infografik',
+      badgeColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+      description: 'Kepentingan dan hikmah disyariatkan akad nikah bagi individu, keluarga, dan masyarakat.',
+      imageUrl: '/assets/infographics/hikmah.png',
+      placeholderBg: 'from-emerald-500/20 to-teal-500/20',
+      tag: 'Infographic'
+    },
+    {
+      id: 2,
+      title: 'Rukun & Syarat',
+      type: 'Video Plotagon',
+      badgeColor: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20',
+      description: 'Membincangkan 5 rukun nikah (bakal suami, bakal isteri, wali, 2 saksi, & sighah) beserta syarat sahnya.',
+      videoUrl: '',
+      placeholderBg: 'from-purple-500/20 to-pink-500/20',
+      tag: 'Plotagon Video'
+    },
+    {
+      id: 3,
+      title: 'Perkahwinan Dalam Islam',
+      type: 'Peta Minda',
+      badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
+      description: 'Peta minda interaktif bagi mengenal pasti golongan wanita yang haram dikahwini sama ada secara selamanya (muabbad) atau sementara (muaqqat).',
+      imageUrl: '/assets/infographics/peta minda.jpg',
+      placeholderBg: 'from-amber-500/20 to-orange-500/20',
+      tag: 'Mind Map'
+    },
+    {
+      id: 4,
+      title: 'Ciri Pemilihan Calon',
+      type: 'Komik Interaktif',
+      badgeColor: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20',
+      description: 'Kisah pendek visual berunsur didik hibur menerangkan kriteria memilih calon suami dan isteri mengikut syarak.',
+      comicFolder: '/assets/comic/',
+      placeholderBg: 'from-pink-500/20 to-rose-500/20',
+      tag: 'Comic Slider'
+    },
+    {
+      id: 5,
+      title: 'Hukum & Wali',
+      type: 'Video Green Screen',
+      badgeColor: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20',
+      description: 'Penerangan komprehensif tentang pembahagian hukum berkahwin serta susunan dan jenis wali (nasab & hakim).',
+      videoUrl: '/assets/videos/hukum_wali.mp4',
+      placeholderBg: 'from-teal-500/20 to-emerald-500/20',
+      tag: 'Green Screen Video'
+    },
+    {
+      id: 6,
+      title: 'Nota : Hukum',
+      type: 'Infografik',
+      badgeColor: 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20',
+      description: 'Ringkasan visual bertulis tentang lima hukum perkahwinan (Wajib, Sunat, Makruh, Harus, Haram).',
+      imageUrl: '/assets/infographics/nota_hukum.png',
+      placeholderBg: 'from-cyan-500/20 to-sky-500/20',
+      tag: 'Infographic Note'
+    },
+    {
+      id: 7,
+      title: 'Nota : Wali',
+      type: 'Infografik',
+      badgeColor: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+      description: 'Nota ringkas berstruktur mengenai syarat-syarat wali nikah dan situasi perpindahan wali nasab kepada wali hakim.',
+      imageUrl: '/assets/infographics/nota_wali.png',
+      placeholderBg: 'from-rose-500/20 to-red-500/20',
+      tag: 'Infographic Note'
+    }
+  ];
+
+  const currentChapter = chapters[activeTab];
+
+  const nextChapter = () => {
+    setActiveTab((prev) => (prev + 1) % chapters.length);
+    setComicPage(1); // Reset comic page on change
+    setComicImageError(false);
+    setImageError(false);
+    setExpandedImage(null);
+  };
+
+  const prevChapter = () => {
+    setActiveTab((prev) => (prev - 1 + chapters.length) % chapters.length);
+    setComicPage(1); // Reset comic page on change
+    setComicImageError(false);
+    setImageError(false);
+    setExpandedImage(null);
+  };
+
+  const handleComicNext = () => {
+    if (comicPage < totalComicPages) {
+      setComicPage(prev => prev + 1);
+      setComicImageError(false);
+    }
+  };
+
+  const handleComicPrev = () => {
+    if (comicPage > 1) {
+      setComicPage(prev => prev - 1);
+      setComicImageError(false);
+    }
+  };
+
+  return (
+    <div className="space-y-8 animate-fade-in">
+      <div className="text-center md:text-left">
+        <h2 className="font-serif text-3xl font-bold tracking-tight">Isi Kandungan Fiqh</h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          Modul pembelajaran terperinci berasaskan media video, infografik, dan komik interaktif.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-12 gap-8">
+        {/* Navigation Sidebar/List */}
+        <div className="md:col-span-3 space-y-2">
+          <p className="text-xs font-bold text-muted-foreground/80 px-2 uppercase tracking-wider">Senarai Topik</p>
+          <div className="flex flex-col gap-1.5 max-h-[500px] overflow-y-auto pr-1">
+            {chapters.map((ch, idx) => (
+              <button
+                key={ch.id}
+                onClick={() => { setActiveTab(idx); setComicPage(1); setComicImageError(false); setImageError(false); setExpandedImage(null); }}
+                className={`w-full text-left p-3.5 rounded-xl border transition-all text-xs md:text-sm flex flex-col gap-1 ${
+                  activeTab === idx
+                    ? 'bg-card border-primary ring-1 ring-primary shadow-sm font-semibold'
+                    : 'bg-card/40 border-border/50 hover:bg-card hover:border-border text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                <div className="flex justify-between items-center w-full">
+                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded-md border ${ch.badgeColor}`}>
+                    {ch.type}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground/60">Topik 0{ch.id + 1}</span>
+                </div>
+                <span className="font-serif font-bold text-foreground leading-tight mt-1">{ch.title}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Display Panel */}
+        <div className="md:col-span-9">
+          <Card className="overflow-hidden border-2 border-primary/20 bg-card shadow-lg flex flex-col h-full min-h-[500px]">
+            {/* Header */}
+            <div className="p-6 border-b border-border/80 bg-muted/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <span className="text-xs text-primary font-bold uppercase tracking-wide">Topik {activeTab + 1} ({currentChapter.tag})</span>
+                <h3 className="font-serif text-2xl font-bold text-foreground mt-0.5">{currentChapter.title}</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button variant="outline" size="icon" onClick={prevChapter}>
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
+                <span className="text-xs font-medium min-w-12 text-center">
+                  {activeTab + 1} / {chapters.length}
+                </span>
+                <Button variant="outline" size="icon" onClick={nextChapter}>
+                  <ChevronRight className="w-4 h-4" />
                 </Button>
               </div>
             </div>
+
+            {/* Description */}
+            <div className="px-6 py-4 bg-muted/5 border-b border-border/40">
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                {currentChapter.description}
+              </p>
+            </div>
+
+            {/* Content Area with Border */}
+            <div className="p-6 flex-1 flex flex-col justify-center bg-muted/10">
+              <div className="relative border-3 border-dashed border-border rounded-2xl bg-card overflow-hidden min-h-[350px] flex flex-col items-center justify-center p-4">
+                
+                {/* VIDEO PLAYER (Chapters 1, 3, 6) */}
+                {currentChapter.videoUrl && (() => {
+                  const youtubeRegExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                  const match = currentChapter.videoUrl.match(youtubeRegExp);
+                  const youtubeId = match && match[2].length === 11 ? match[2] : null;
+
+                  if (youtubeId) {
+                    return (
+                      <div className="w-full h-full flex flex-col items-center justify-center">
+                        <div className="w-full aspect-video rounded-lg max-h-[500px] overflow-hidden bg-black shadow-inner">
+                          <iframe 
+                            className="w-full h-full border-0"
+                            src={`https://www.youtube.com/embed/${youtubeId}`}
+                            title={currentChapter.title}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                          ></iframe>
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="w-full h-full flex flex-col items-center justify-center">
+                      <video 
+                        className="w-full rounded-lg max-h-[500px] bg-black" 
+                        controls 
+                        src={currentChapter.videoUrl}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                      {/* Fallback styling for demonstration */}
+                      <div className="mt-4 p-4 text-center bg-primary/5 rounded-xl border border-primary/10 w-full max-w-md">
+                        <Play className="w-8 h-8 text-primary mx-auto mb-2 opacity-80" />
+                        <p className="text-xs font-semibold">Video Player: {currentChapter.title}</p>
+                        <p className="text-[10px] text-muted-foreground mt-1">
+                          Sila letak fail video di: <code className="bg-secondary px-1 py-0.5 rounded text-primary">{currentChapter.videoUrl}</code> atau gantikan dengan URL video YouTube.
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* INFOGRAPHICS & MIND MAPS (Chapters 2, 4, 7, 8) */}
+                {currentChapter.imageUrl && (
+                  <div className="w-full h-full flex flex-col items-center justify-center">
+                    {!imageError ? (
+                      <div 
+                        className="relative group cursor-zoom-in w-full flex flex-col items-center justify-center overflow-hidden rounded-lg"
+                        onClick={() => setExpandedImage(currentChapter.imageUrl)}
+                      >
+                        <img 
+                          src={currentChapter.imageUrl} 
+                          alt={currentChapter.title}
+                          className="max-h-[600px] object-contain rounded-lg shadow-sm transition-transform duration-200 group-hover:scale-[1.01]"
+                          onError={() => setImageError(true)}
+                        />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200 flex items-center justify-center">
+                          <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                            Klik untuk besarkan paparan
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Fallback Educational CSS Visualizer */
+                      <div className="p-6 w-full max-w-2xl bg-gradient-to-br from-card to-secondary/30 rounded-2xl border border-border/80 shadow-inner text-center">
+                        <FileText className="w-10 h-10 text-primary/60 mx-auto mb-3" />
+                        <h4 className="font-serif text-lg font-bold mb-2 text-primary">{currentChapter.title}</h4>
+                        
+                        {currentChapter.id === 1 && (
+                          <div className="text-left space-y-2 text-xs">
+                            <p className="font-semibold text-center text-muted-foreground mb-3">5 Hikmah Utama Pensyariatan Nikah:</p>
+                            <div className="grid grid-cols-2 gap-2 text-[11px]">
+                              <div className="p-2 bg-card rounded border">1. Memenuhi tuntutan fitrah manusia secara halal.</div>
+                              <div className="p-2 bg-card rounded border">2. Memelihara keturunan & nasab yang sah.</div>
+                              <div className="p-2 bg-card rounded border">3. Mewujudkan ketenangan jiwa (sakinah).</div>
+                              <div className="p-2 bg-card rounded border">4. Menghindarkan diri daripada maksiat & zina.</div>
+                              <div className="p-2 bg-card rounded border col-span-2">5. Menyatukan dua keluarga besar serta mengukuhkan silaturahim.</div>
+                            </div>
+                          </div>
+                        )}
+
+                        {currentChapter.id === 6 && (
+                          <div className="text-left space-y-2 text-xs">
+                            <p className="font-semibold text-center text-muted-foreground mb-2">Pecahan 5 Hukum Nikah:</p>
+                            <div className="space-y-1.5 text-[11px]">
+                              <div className="flex justify-between items-center p-1.5 bg-card rounded border"><span className="font-bold text-red-500">Wajib:</span> Mampu & takut terjatuh ke lembah zina</div>
+                              <div className="flex justify-between items-center p-1.5 bg-card rounded border"><span className="font-bold text-emerald-500">Sunat:</span> Mampu & mempunyai keinginan berkahwin</div>
+                              <div className="flex justify-between items-center p-1.5 bg-card rounded border"><span className="font-bold text-amber-500">Harus:</span> Tiada desakan & tidak memudaratkan</div>
+                              <div className="flex justify-between items-center p-1.5 bg-card rounded border"><span className="font-bold text-orange-500">Makruh:</span> Bimbang tidak dapat penuhi hak isteri</div>
+                              <div className="flex justify-between items-center p-1.5 bg-card rounded border"><span className="font-bold text-rose-600">Haram:</span> Niat zalim / memudaratkan pasangan</div>
+                            </div>
+                          </div>
+                        )}
+
+                        {currentChapter.id === 7 && (
+                          <div className="text-left space-y-2 text-xs">
+                            <p className="font-semibold text-center text-muted-foreground mb-2">Syarat & Pembahagian Wali:</p>
+                            <div className="grid grid-cols-2 gap-3 text-[11px]">
+                              <div className="p-2 bg-card rounded border">
+                                <span className="font-bold text-primary block">Wali Nasab</span>
+                                <p className="text-[10px] mt-1">Wali yang mempunyai hubungan darah (Bapa, Datuk, Adik-beradik lelaki).</p>
+                              </div>
+                              <div className="p-2 bg-card rounded border">
+                                <span className="font-bold text-primary block">Wali Hakim</span>
+                                <p className="text-[10px] mt-1">Dilantik oleh Sultan/Pemerintah jika ketiadaan wali nasab atau wali enggan (syarat dipenuhi).</p>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* COMIC SLIDER (Chapter 5) */}
+                {currentChapter.comicFolder && (
+                  <div className="w-full flex flex-col items-center justify-center">
+                    {/* Comic Panel Container */}
+                    <div className="w-full max-w-3xl border-2 border-primary/20 rounded-2xl overflow-hidden bg-card shadow-md">
+                      
+                      {/* Comic Image Placeholder or Actual Image */}
+                      {!comicImageError ? (
+                        <div 
+                          className="relative w-full aspect-[4/3] bg-black flex items-center justify-center cursor-zoom-in group overflow-hidden"
+                          onClick={() => setExpandedImage(`${currentChapter.comicFolder}ms ${comicPage}.jpg`)}
+                        >
+                          <img 
+                            key={comicPage}
+                            src={`${currentChapter.comicFolder}ms ${comicPage}.jpg`} 
+                            alt={`Comic Page ${comicPage}`}
+                            className="max-h-full max-w-full object-contain transition-transform duration-200 group-hover:scale-[1.01]"
+                            onError={() => setComicImageError(true)}
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200 flex items-center justify-center">
+                            <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                              Klik untuk besarkan komik
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-full aspect-[4/3] bg-gradient-to-br from-rose-50 to-pink-100 dark:from-rose-950/20 dark:to-pink-900/10 flex flex-col items-center justify-center p-6 text-center border-b">
+                          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-3">
+                            <Heart className="w-6 h-6 text-primary" />
+                          </div>
+                          <h4 className="font-serif text-lg font-bold text-primary">Ciri Pemilihan Calon (Halaman {comicPage}/{totalComicPages})</h4>
+                          
+                          {comicPage === 1 && (
+                            <div className="space-y-2 max-w-sm mt-2">
+                              <p className="text-xs italic text-foreground">Panel 1: "Kepentingan Agama Lebih Utama"</p>
+                              <p className="text-xs text-muted-foreground">
+                                "Seorang wanita dinikahi kerana empat perkara: hartanya, keturunannya, kecantikannya, dan agamanya. Pilihlah yang beragama nescaya kamu beruntung." (Hadis Sahih)
+                              </p>
+                            </div>
+                          )}
+                          {comicPage === 2 && (
+                            <div className="space-y-2 max-w-sm mt-2">
+                              <p className="text-xs italic text-foreground">Panel 2: "Kriteria Calon Suami"</p>
+                              <p className="text-xs text-muted-foreground">
+                                Memiliki pegangan agama kukuh, akhlak mulia, bertanggungjawab menyediakan nafkah, dan berkemampuan memimpin isteri ke arah kebaikan.
+                              </p>
+                            </div>
+                          )}
+                          {comicPage === 3 && (
+                            <div className="space-y-2 max-w-sm mt-2">
+                              <p className="text-xs italic text-foreground">Panel 3: "Kriteria Calon Isteri"</p>
+                              <p className="text-xs text-muted-foreground">
+                                Berakhlak sopan, penyayang, subur keturunannya, beragama, serta menjadi penyejuk mata (sakinah) buat bakal suami.
+                              </p>
+                            </div>
+                          )}
+                          {comicPage === 4 && (
+                            <div className="space-y-2 max-w-sm mt-2">
+                              <p className="text-xs italic text-foreground">Panel 4: "Bina Baitul Muslim"</p>
+                              <p className="text-xs text-muted-foreground">
+                                Kesefahaman yang dibina atas dasar taat kepada Allah akan membuahkan sebuah mahligai perkahwinan yang mawaddah dan warahmah.
+                              </p>
+                            </div>
+                          )}
+
+                          <div className="mt-4 text-[9px] text-muted-foreground bg-background/60 px-2 py-1 rounded">
+                            Mencari fail komik: <code className="text-primary">{currentChapter.comicFolder}ms {comicPage}.jpg</code>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Comic Paddle Navigation Bar */}
+                      <div className="p-3 bg-secondary/30 flex items-center justify-between">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={handleComicPrev} 
+                          disabled={comicPage === 1}
+                          className="gap-1 text-xs"
+                        >
+                          <ChevronLeft className="w-4 h-4" /> Sebelum
+                        </Button>
+                        <span className="text-xs font-semibold">
+                          Halaman {comicPage} dari {totalComicPages}
+                        </span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={handleComicNext} 
+                          disabled={comicPage === totalComicPages}
+                          className="gap-1 text-xs"
+                        >
+                          Seterusnya <ChevronRight className="w-4 h-4" />
+                        </Button>
+                      </div>
+
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
           </Card>
-        ))}
+        </div>
+      </div>
+
+      {/* Image Lightbox Modal */}
+      {expandedImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 cursor-zoom-out"
+          onClick={() => setExpandedImage(null)}
+        >
+          <button 
+            onClick={() => setExpandedImage(null)}
+            className="absolute top-6 right-6 bg-white/10 hover:bg-white/20 text-white rounded-full p-2.5 transition-colors border border-white/20 z-50 cursor-pointer"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Floating Left/Right Arrows for Expanded Comic */}
+          {currentChapter.comicFolder && (
+            <div className="absolute inset-x-4 md:inset-x-12 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-50">
+              <Button
+                variant="outline"
+                size="icon"
+                disabled={comicPage === 1}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (comicPage > 1) {
+                    const newPage = comicPage - 1;
+                    setComicPage(newPage);
+                    setExpandedImage(`${currentChapter.comicFolder}ms ${newPage}.jpg`);
+                  }
+                }}
+                className="h-14 w-14 rounded-full border-white/25 bg-black/50 text-white hover:bg-black/80 hover:text-white pointer-events-auto disabled:opacity-20 transition-all active:scale-95"
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </Button>
+              <Button
+                variant="outline"
+                size="icon"
+                disabled={comicPage === totalComicPages}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (comicPage < totalComicPages) {
+                    const newPage = comicPage + 1;
+                    setComicPage(newPage);
+                    setExpandedImage(`${currentChapter.comicFolder}ms ${newPage}.jpg`);
+                  }
+                }}
+                className="h-14 w-14 rounded-full border-white/25 bg-black/50 text-white hover:bg-black/80 hover:text-white pointer-events-auto disabled:opacity-20 transition-all active:scale-95"
+              >
+                <ChevronRight className="w-8 h-8" />
+              </Button>
+            </div>
+          )}
+
+          <div className="relative max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center">
+            <img 
+              src={expandedImage} 
+              alt="Expanded view" 
+              className="max-w-full max-h-full object-contain rounded-xl shadow-2xl cursor-default"
+              onClick={(e) => e.stopPropagation()}
+            />
+            {currentChapter.comicFolder && (
+              <span className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full pointer-events-none">
+                Halaman {comicPage} / {totalComicPages}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ----------------------------------------------------
+// NIKAH EDU & QUESTIONNAIRE PAGE
+// ----------------------------------------------------
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  correct: number;
+}
+
+function NikahEduPage() {
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizStep, setQuizStep] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [score, setScore] = useState(0);
+  const [quizFinished, setQuizFinished] = useState(false);
+
+  const links = [
+    {
+      title: 'Portal e-Syariah Malaysia',
+      desc: 'Rujukan kes-kes mahkamah syariah dan pendaftaran urusan undang-undang keluarga Islam.',
+      url: 'https://www.esyariah.gov.my/',
+      category: 'Undang-undang'
+    },
+    {
+      title: 'JAKIM - Portal Islam.gov.my',
+      desc: 'Panduan rasmi keagamaan, garis panduan khutbah, halal, dan perkhidmatan kekeluargaan Islam.',
+      url: 'https://www.islam.gov.my/',
+      category: 'Rujukan Agama'
+    },
+    {
+      title: 'Sppim (Sistem Pengurusan Perkahwinan Islam Malaysia)',
+      desc: 'Urusan permohonan kebenaran berkahwin online dan modul kursus perkahwinan digital.',
+      url: 'http://www.sppim.gov.my/',
+      category: 'Pendaftaran Nikah'
+    },
+    {
+      title: 'Jabatan Kehakiman Syariah Malaysia (JKSM)',
+      desc: 'Maklumat panduan urusan perkahwinan, penceraian, dan tuntutan nafkah bagi umat Islam.',
+      url: 'https://www.jksm.gov.my/',
+      category: 'Kehakiman & Fiqh'
+    }
+  ];
+
+  const questions: Question[] = [
+    {
+      id: 1,
+      question: 'Apakah hukum asal perkahwinan di dalam syariat Islam?',
+      options: ['Wajib', 'Sunat', 'Harus', 'Haram'],
+      correct: 2 // Harus / Sunat depends on school, but standard SPM book: Harus (Hukum asal nikah ialah Harus)
+    },
+    {
+      id: 2,
+      question: 'Manakah antara berikut yang BUKAN merupakan sebahagian daripada 5 rukun nikah?',
+      options: ['Bakal Suami', 'Wali', 'Mas Kahwin (Mahar)', 'Sighah (Ijab & Qabul)'],
+      correct: 2 // Mas Kahwin is not rukun, it is syarat/perkara wajib
+    },
+    {
+      id: 3,
+      question: 'Siapakah yang tergolong dalam kumpulan mahram selamanya (muabbad) disebabkan keturunan?',
+      options: ['Ibu Mertua', 'Kakak Kandung', 'Adik ipar perempuan', 'Isteri orang lain'],
+      correct: 1 // Kakak Kandung
+    },
+    {
+      id: 4,
+      question: 'Bilakah wali hakim boleh digunakan untuk menikahkan seseorang perempuan?',
+      options: [
+        'Apabila bapa kandung menentang pilihan anak tanpa sebab syarak (wali mujbir enggan)',
+        'Apabila tiada wali nasab langsung atau wali nasab berada jauh melebihi 2 marhalah',
+        'Apabila pengantin perempuan berumur bawah 18 tahun',
+        'Jawapan A dan B adalah betul'
+      ],
+      correct: 3 // Both A and B are valid reasons for Wali Hakim
+    }
+  ];
+
+  const handleStartQuiz = () => {
+    setShowQuiz(true);
+    setQuizStep(0);
+    setSelectedAnswer(null);
+    setScore(0);
+    setQuizFinished(false);
+  };
+
+  const handleOptionSelect = (optionIdx: number) => {
+    setSelectedAnswer(optionIdx);
+  };
+
+  const handleNext = () => {
+    if (selectedAnswer === null) return;
+
+    if (selectedAnswer === questions[quizStep].correct) {
+      setScore(prev => prev + 1);
+    }
+
+    setSelectedAnswer(null);
+    if (quizStep + 1 < questions.length) {
+      setQuizStep(prev => prev + 1);
+    } else {
+      setQuizFinished(true);
+    }
+  };
+
+  return (
+    <div className="space-y-10 animate-fade-in">
+      {/* Header */}
+      <div className="text-center md:text-left">
+        <h2 className="font-serif text-3xl font-bold tracking-tight">Nikah Edu</h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          Akses pautan-pautan rujukan rasmi undang-undang keluarga Islam serta uji kefahaman anda menerusi modul kuiz interaktif.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8">
+        
+        {/* Left Column: Link List */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <span className="p-1 bg-primary/10 rounded-md text-primary">
+              <BookOpen className="w-5 h-5" />
+            </span>
+            <h3 className="font-serif text-xl font-bold">Pautan Rujukan Rasmi</h3>
+          </div>
+
+          <div className="space-y-4">
+            {links.map((link, idx) => (
+              <Card key={idx} className="p-5 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all group">
+                <div className="flex justify-between items-start mb-2">
+                  <Badge variant="outline" className="text-[10px] uppercase font-bold py-0.5 px-2 bg-secondary/40 text-muted-foreground">
+                    {link.category}
+                  </Badge>
+                  <a 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+                <h4 className="font-serif text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                  {link.title}
+                </h4>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-1">
+                  {link.desc}
+                </p>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Column: Quiz (Selamat Jawab) */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <span className="p-1 bg-primary/10 rounded-md text-primary">
+              <ClipboardList className="w-5 h-5" />
+            </span>
+            <h3 className="font-serif text-xl font-bold">Selamat Jawab</h3>
+          </div>
+
+          {!showQuiz ? (
+            <Card className="p-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 flex flex-col items-center justify-center text-center space-y-4">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <UserCheck className="w-7 h-7" />
+              </div>
+              <h4 className="font-serif text-xl font-bold text-foreground">Uji Kefahaman Fiqh Nikah</h4>
+              <p className="text-xs text-muted-foreground max-w-sm leading-relaxed">
+                Jawab 4 soalan objektif ringkas berasaskan sukatan Pendidikan Islam Tingkatan 5 untuk menilai sejauh mana pemahaman anda.
+              </p>
+              <Button onClick={handleStartQuiz} className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 rounded-xl">
+                Mula Menjawab
+              </Button>
+            </Card>
+          ) : (
+            <Card className="p-6 border-2 border-primary/20 flex flex-col justify-between min-h-[350px]">
+              {/* Quiz Results */}
+              {quizFinished ? (
+                <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 my-auto">
+                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <CheckCircle2 className="w-10 h-10" />
+                  </div>
+                  <div>
+                    <h4 className="font-serif text-2xl font-bold text-foreground">Kuiz Selesai!</h4>
+                    <p className="text-sm text-muted-foreground mt-1">Terima kasih kerana mencuba.</p>
+                  </div>
+
+                  <div className="p-4 bg-muted/50 rounded-2xl w-full max-w-xs border">
+                    <span className="text-xs text-muted-foreground font-bold">SKOR ANDA:</span>
+                    <h5 className="font-serif text-4xl font-extrabold text-primary mt-1">
+                      {score} / {questions.length}
+                    </h5>
+                    <p className="text-[11px] text-muted-foreground mt-2">
+                      {score === questions.length ? 'Cemerlang! Anda sangat bersedia.' : 'Teruskan mengulang kaji video & nota di tab Isi Kandungan!'}
+                    </p>
+                  </div>
+
+                  <div className="flex gap-3 w-full max-w-xs">
+                    <Button onClick={handleStartQuiz} variant="outline" className="flex-1 rounded-xl">
+                      Cuba Lagi
+                    </Button>
+                    <Button onClick={() => setShowQuiz(false)} className="flex-1 bg-primary text-primary-foreground rounded-xl">
+                      Tutup
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                /* Question Layout */
+                <div className="flex flex-col h-full justify-between gap-4">
+                  {/* Progress Header */}
+                  <div>
+                    <div className="flex justify-between items-center text-xs font-bold text-muted-foreground mb-2">
+                      <span>SOALAN {quizStep + 1} DARI {questions.length}</span>
+                      <span className="text-primary">{Math.round(((quizStep + 1) / questions.length) * 100)}%</span>
+                    </div>
+                    <Progress value={((quizStep + 1) / questions.length) * 100} className="h-1.5" />
+                  </div>
+
+                  {/* Question */}
+                  <div className="py-2">
+                    <p className="font-serif text-lg font-bold text-foreground leading-relaxed">
+                      {questions[quizStep].question}
+                    </p>
+                  </div>
+
+                  {/* Options */}
+                  <div className="space-y-2.5">
+                    {questions[quizStep].options.map((option, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleOptionSelect(idx)}
+                        className={`w-full text-left p-3.5 rounded-xl border text-xs md:text-sm font-medium transition-all ${
+                          selectedAnswer === idx
+                            ? 'bg-primary/10 border-primary text-primary ring-1 ring-primary'
+                            : 'bg-card border-border hover:bg-muted/40 text-foreground'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold ${
+                            selectedAnswer === idx ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/40 text-muted-foreground'
+                          }`}>
+                            {String.fromCharCode(65 + idx)}
+                          </span>
+                          {option}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Footer Action */}
+                  <div className="pt-4 border-t flex justify-end">
+                    <Button 
+                      onClick={handleNext} 
+                      disabled={selectedAnswer === null}
+                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 rounded-xl"
+                    >
+                      {quizStep + 1 === questions.length ? 'Selesai' : 'Seterusnya'}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </Card>
+          )}
+
+        </div>
+
       </div>
     </div>
   );
 }
 
-function ResourcesPage() {
-  const quizzes = [
-    { id: 1, title: 'Wedding Planning Basics' },
-    { id: 2, title: 'Communication in Marriage' },
-    { id: 3, title: 'Financial Planning for Couples' },
-    { id: 4, title: 'Building a Strong Foundation' },
+// ----------------------------------------------------
+// TENTANG KAMI PAGE COMPONENT (Ahli Kumpulan)
+// ----------------------------------------------------
+function TentangKamiPage() {
+  const members = [
+    {
+      name: '',
+      role: 'Ketua Kumpulan & Penyunting Video',
+      desc: 'Menyelaras keseluruhan pembangunan aplikasi web serta mengunting video animasi Powtoon & Plotagon.',
+      initials: 'AY',
+      color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
+    },
+    {
+      name: '',
+      role: 'Pereka Infografik & Komik',
+      desc: 'Melakar peta minda interaktif, mengarang dialog komik pemilihan calon, dan menghasilkan visual nota fiqh.',
+      initials: 'AN',
+      color: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20'
+    },
+    {
+      name: '',
+      role: 'Penyelidik Kandungan & Rujukan Syarak',
+      desc: 'Memastikan kesahihan dalil hukum, menyaring sukatan Fiqh perkahwinan SPM, dan menyusun soalan kuiz.',
+      initials: 'HK',
+      color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+    }
   ];
 
   return (
-    <div className="max-w-4xl mx-auto w-full">
-      <div className="mb-8 text-center">
-        <h2 className="font-serif text-4xl font-bold text-foreground mb-2">My Notes & Resources</h2>
-        <p className="text-lg text-muted-foreground">Access comprehensive learning resources and interactive quizzes</p>
+    <div className="space-y-10 animate-fade-in">
+      {/* Header */}
+      <div className="text-center md:text-left">
+        <h2 className="font-serif text-3xl font-bold tracking-tight">Tentang Kami</h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          Kenali barisan ahli kumpulan di sebalik pembangunan portal pembelajaran digital Mahligai Cinta.
+        </p>
       </div>
 
-      <div className="grid gap-6">
-        {/* Mindmap Section */}
-        <Card className="p-8 border-2 border-primary/30 text-center">
-          <h3 className="font-serif text-2xl font-bold text-foreground mb-4">Mindmap</h3>
-          <div className="bg-gradient-to-br from-primary/5 to-accent/5 h-64 rounded-lg flex items-center justify-center border-2 border-dashed border-primary/20">
-            <div className="text-center">
-              <BookOpen className="w-12 h-12 text-primary/40 mx-auto mb-2" />
-              <p className="text-muted-foreground">Interactive mindmap visualization coming soon</p>
-            </div>
-          </div>
-        </Card>
-
-        {/* Flip Book Section */}
-        <Card className="p-8 border-2 border-accent/30 text-center">
-          <h3 className="font-serif text-2xl font-bold text-foreground mb-4">Flip Book</h3>
-          <div className="bg-gradient-to-br from-accent/5 to-primary/5 h-64 rounded-lg flex items-center justify-center border-2 border-dashed border-accent/20">
-            <div className="text-center">
-              <BookOpen className="w-12 h-12 text-accent/40 mx-auto mb-2" />
-              <p className="text-muted-foreground">Interactive flip book resource coming soon</p>
-            </div>
-          </div>
-        </Card>
-
-        {/* Kuiz Section */}
-        <Card className="p-8 border border-border text-center">
-          <h3 className="font-serif text-2xl font-bold text-foreground mb-6">Kuiz (Quiz)</h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            {quizzes.map((quiz) => (
-              <Button
-                key={quiz.id}
-                variant="outline"
-                className="h-auto py-4 flex flex-col items-center justify-center border-2 hover:border-primary hover:bg-primary/5 transition-colors text-center"
-              >
-                <span className="text-lg font-semibold text-foreground">{quiz.id}.</span>
-                <span className="text-sm text-foreground mt-2">{quiz.title}</span>
-              </Button>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-function ExercisePage() {
-  return (
-    <div className="max-w-4xl mx-auto w-full">
-      <div className="mb-8 text-center">
-        <h2 className="font-serif text-4xl font-bold text-foreground mb-2">Exercise & Games</h2>
-        <p className="text-lg text-muted-foreground">Interactive activities to reinforce your learning</p>
-      </div>
-
-      <Card className="p-12 border-2 border-primary/30">
-        <div className="text-center">
-          <Gamepad2 className="w-16 h-16 text-primary/40 mx-auto mb-4" />
-          <h3 className="font-serif text-2xl font-bold text-foreground mb-3">Interactive Games Coming Soon</h3>
-          <p className="text-muted-foreground mb-6">
-            We&apos;re developing engaging exercises and games to make your learning experience interactive and fun. Check back soon!
+      <Card className="p-8 border border-border bg-gradient-to-br from-card via-card to-primary/5">
+        <div className="max-w-2xl mx-auto text-center space-y-4 mb-10">
+          <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">Profil Kumpulan</Badge>
+          <h3 className="font-serif text-2xl font-bold">Tenaga Kreatif Mahligai Cinta</h3>
+          <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+            Kami merupakan pasukan pelajar dan pendidik yang berazam untuk memodenkan cara pengajaran Fiqh Perkahwinan melalui kaedah didik hibur bersesuaian dengan standard pembelajaran Pembelajaran Abad Ke-21 (PAK21).
           </p>
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" disabled>
-            Games in Development
-          </Button>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {members.map((member, idx) => (
+            <Card key={idx} className="p-6 border border-border/60 hover:shadow-md transition-all text-center flex flex-col justify-between">
+              <div>
+                <div className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center text-lg font-bold border mb-4 ${member.color}`}>
+                  {member.initials}
+                </div>
+                <h4 className="font-serif text-base font-bold text-foreground">
+                  {member.name}
+                </h4>
+                <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider mt-1 px-2.5 py-0.5 border-primary/20 bg-primary/5 text-primary">
+                  {member.role}
+                </Badge>
+                <p className="text-[11px] text-muted-foreground leading-relaxed mt-4">
+                  {member.desc}
+                </p>
+              </div>
+              <div className="mt-6 pt-3 border-t text-[10px] text-muted-foreground/60 font-semibold uppercase">
+                Ahli Kumpulan 0{idx + 1}
+              </div>
+            </Card>
+          ))}
         </div>
       </Card>
     </div>
