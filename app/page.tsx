@@ -74,7 +74,7 @@ const akadIlmuList = [
         tag: 'Mind Map'
       },
       {
-        title: 'Golongan Haram Dikahwini',
+        title: 'Golongan Wanita Haram Dikahwini',
         type: 'Peta Minda',
         badgeColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20',
         description: 'Peta minda interaktif bagi mengenal pasti golongan wanita yang haram dikahwini sama ada secara selamanya (muabbad) atau sementara (muaqqat).',
