@@ -554,8 +554,16 @@ export default function App() {
           isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'
         }`}
       >
+        {/* Global Floral Watermarks */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <FloralWatermark className="top-12 left-12 w-96 h-96 opacity-[0.07] dark:opacity-[0.03]" />
+          <FloralWatermark className="bottom-12 right-12 w-96 h-96 opacity-[0.07] dark:opacity-[0.03]" />
+          <FloralWatermark className="top-1/3 right-1/4 w-80 h-80 opacity-[0.04] dark:opacity-[0.02]" />
+          <FloralWatermark className="bottom-1/3 left-1/4 w-80 h-80 opacity-[0.04] dark:opacity-[0.02]" />
+        </div>
+
         {/* Mobile Header Spacer */}
-        <div className="md:hidden pt-16 px-4 pb-4 text-center border-b border-border/40 bg-card/50 backdrop-blur relative">
+        <div className="md:hidden pt-16 px-4 pb-4 text-center border-b border-border/40 bg-card/50 backdrop-blur relative z-10">
           <h1 className="font-serif text-2xl font-bold text-primary floral-text-gradient">Mahligai Cinta</h1>
         </div>
 
@@ -630,24 +638,59 @@ function HomePage() {
       <FloralWatermark className="bottom-10 right-10 w-96 h-96 opacity-[0.04]" />
 
       {/* Hero Section */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/10 via-accent/5 to-background border border-primary/20 p-8 md:p-12 text-center shadow-lg floral-card">
-        {/* Corner flowers */}
-        <FloralCorner className="top-0 right-0 rotate-90" />
-        <FloralCorner className="bottom-0 left-0 -rotate-90" />
-        
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-accent/15 rounded-full blur-2xl -z-10" />
-        
-        <Badge className="mb-4 bg-primary/15 text-primary hover:bg-primary/25 border-primary/30 py-1 px-3 text-xs rounded-full">
-          Portal Pendidikan Fiqh Perkahwinan
-        </Badge>
-        <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground mb-4 tracking-tight floral-text-gradient">
-          Selamat Datang ke <span className="text-primary">Mahligai Cinta</span>
-        </h2>
-        <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base leading-relaxed font-sans relative z-10">
-          Platform pembelajaran digital interaktif yang menggabungkan elemen multimedia, infografik, dan komik kreatif untuk menguasai kefahaman Fiqh Perkahwinan dengan cara yang menyeronokkan.
-        </p>
+      <div 
+        className="relative overflow-hidden rounded-3xl border border-primary/20 p-6 md:p-12 shadow-lg flex flex-col items-center justify-center min-h-[520px] bg-cover bg-center"
+        style={{ backgroundImage: "url('/assets/floral-background.png')" }}
+      >
+        <div className="absolute inset-0 bg-white/10 dark:bg-black/20 pointer-events-none" />
+
+        {/* Content Wrapper */}
+        <div className="relative w-full max-w-4xl flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 z-10 py-6">
+          {/* Left: Wedding Couple Illustration */}
+          <div className="w-full md:w-[40%] flex justify-center md:justify-end">
+            <div className="relative max-w-[200px] md:max-w-[240px] w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-lg border-4 border-white dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-sm p-2 transition-transform duration-300 hover:scale-[1.03]">
+              <img
+                src="/assets/wedding-couple.png"
+                alt="Muslim Wedding Couple"
+                className="w-full h-full object-cover rounded-xl"
+              />
+            </div>
+          </div>
+
+          {/* Right: The Golden Arch Card */}
+          <div className="w-full md:w-[45%] flex justify-center md:justify-start">
+            <div className="relative w-full max-w-[320px] aspect-[2/3] bg-[#fbf9f4]/95 dark:bg-card/95 backdrop-blur-sm border-[3px] border-[#d4af37] dark:border-primary/40 rounded-t-[160px] rounded-b-2xl shadow-xl flex flex-col items-center justify-between p-6 md:p-8 text-center transition-all duration-300 hover:shadow-2xl">
+              
+              {/* Islamic Calligraphy representation */}
+              <div className="text-[#c5a059] font-serif text-sm tracking-widest mt-6 opacity-90 select-none">
+                بسم الله الرحمن الرحيم
+              </div>
+
+              {/* Title & Description inside Arch */}
+              <div className="flex-1 flex flex-col justify-center my-6 space-y-4">
+                <h2 className="font-serif text-2xl md:text-3xl font-extrabold tracking-widest text-[#7d3c3c] dark:text-rose-400 leading-relaxed uppercase flex flex-col gap-1.5">
+                  <span>Selamat</span>
+                  <span>Datang</span>
+                  <span>ke</span>
+                  <span className="text-primary font-bold">Mahligai</span>
+                  <span className="text-primary/80 font-bold">Cinta</span>
+                </h2>
+                
+                <p className="text-[11px] text-muted-foreground leading-relaxed font-sans max-w-[240px] mx-auto">
+                  Platform digital interaktif untuk menguasai kefahaman Fiqh Perkahwinan secara inovatif.
+                </p>
+              </div>
+
+              {/* Bottom Arch Label */}
+              <div className="text-[9px] font-bold text-[#c5a059] tracking-[0.2em] mb-4 uppercase">
+                PORTAL PENDIDIKAN FIQH
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
+
 
       <FloralDivider />
 
@@ -1333,6 +1376,7 @@ function TentangKamiPage() {
       role: 'Ketua Kumpulan & Penyunting Video',
       desc: 'Menyelaras keseluruhan pembangunan aplikasi web serta mengunting video animasi Powtoon & Plotagon.',
       initials: 'AY',
+      image: '/assets/tentang-kami/member1.jpg',
       color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
     },
     {
@@ -1340,6 +1384,7 @@ function TentangKamiPage() {
       role: 'Pereka Infografik & Komik',
       desc: 'Melakar peta minda interaktif, mengarang dialog komik pemilihan calon, dan menghasilkan visual nota fiqh.',
       initials: 'AN',
+      image: '/assets/tentang-kami/member2.jpg',
       color: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20'
     },
     {
@@ -1347,7 +1392,24 @@ function TentangKamiPage() {
       role: 'Penyelidik Kandungan & Rujukan Syarak',
       desc: 'Memastikan kesahihan dalil hukum, menyaring sukatan Fiqh perkahwinan SPM, dan menyusun soalan kuiz.',
       initials: 'HK',
+      image: '/assets/tentang-kami/member3.jpg',
       color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+    },
+    {
+      name: '',
+      role: 'Pereka Antaramuka & Pengaturcara',
+      desc: 'Membangunkan antaramuka pengguna yang responsif serta memastikan kelancaran navigasi sistem.',
+      initials: 'AA',
+      image: '/assets/tentang-kami/member4.jpg',
+      color: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20'
+    },
+    {
+      name: '',
+      role: 'Penyelaras Projek & Penguji Aplikasi',
+      desc: 'Menguruskan perancangan projek, mendokumentasikan laporan, serta menjalankan pengujian kebolehgunaan aplikasi.',
+      initials: 'AM',
+      image: '/assets/tentang-kami/member5.jpg',
+      color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     }
   ];
 
@@ -1372,11 +1434,33 @@ function TentangKamiPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {members.map((member, idx) => (
             <Card key={idx} className="p-6 border border-border/60 hover:shadow-md transition-all text-center flex flex-col justify-between">
               <div>
-                <div className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center text-lg font-bold border mb-4 ${member.color}`}>
+                {member.image ? (
+                  <div className="w-20 h-20 rounded-full mx-auto overflow-hidden border-2 border-primary/20 mb-4 bg-muted flex items-center justify-center shadow-inner relative group">
+                    <img
+                      src={member.image}
+                      alt={member.name || member.role}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      onError={(e) => {
+                        // If image fails or doesn't exist, hide it and display fallback initials instead.
+                        (e.currentTarget as HTMLElement).style.display = 'none';
+                        const parent = (e.currentTarget as HTMLElement).parentElement;
+                        if (parent) {
+                          const fallback = parent.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = 'flex';
+                          parent.style.display = 'none';
+                        }
+                      }}
+                    />
+                  </div>
+                ) : null}
+                <div 
+                  className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center text-lg font-bold border mb-4 ${member.color}`}
+                  style={{ display: member.image ? 'none' : 'flex' }}
+                >
                   {member.initials}
                 </div>
                 <h4 className="font-serif text-base font-bold text-foreground">
