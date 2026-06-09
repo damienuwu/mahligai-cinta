@@ -41,7 +41,7 @@ const akadIlmuList = [
         type: 'Video Powtoon',
         badgeColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20',
         description: 'Menjelaskan definisi perkahwinan dari segi bahasa dan syarak beserta dalil pensyariatan naqli.',
-        videoUrl: '',
+        videoUrl: 'https://www.youtube.com/watch?v=-ru6caprSwo',
         tag: 'Powtoon Video'
       },
       {
@@ -102,7 +102,7 @@ const akadIlmuList = [
         type: 'Video Green Screen',
         badgeColor: 'bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20',
         description: 'Penerangan komprehensif tentang pembahagian hukum berkahwin serta susunan dan jenis wali (nasab & hakim).',
-        videoUrl: '',
+        videoUrl: 'https://www.youtube.com/watch?v=31mSP3iREgE',
         tag: 'Green Screen Video'
       },
       {
@@ -1206,12 +1206,6 @@ interface Question {
 }
 
 function NikahEduPage() {
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [quizStep, setQuizStep] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [score, setScore] = useState(0);
-  const [quizFinished, setQuizFinished] = useState(false);
-
   const links = [
     {
       title: 'Portal e-Syariah Malaysia',
@@ -1238,65 +1232,6 @@ function NikahEduPage() {
       category: 'Kehakiman & Fiqh'
     }
   ];
-
-  const questions: Question[] = [
-    {
-      id: 1,
-      question: 'Apakah hukum asal perkahwinan di dalam syariat Islam?',
-      options: ['Wajib', 'Sunat', 'Harus', 'Haram'],
-      correct: 2 // Harus / Sunat depends on school, but standard SPM book: Harus (Hukum asal nikah ialah Harus)
-    },
-    {
-      id: 2,
-      question: 'Manakah antara berikut yang BUKAN merupakan sebahagian daripada 5 rukun nikah?',
-      options: ['Bakal Suami', 'Wali', 'Mas Kahwin (Mahar)', 'Sighah (Ijab & Qabul)'],
-      correct: 2 // Mas Kahwin is not rukun, it is syarat/perkara wajib
-    },
-    {
-      id: 3,
-      question: 'Siapakah yang tergolong dalam kumpulan mahram selamanya (muabbad) disebabkan keturunan?',
-      options: ['Ibu Mertua', 'Kakak Kandung', 'Adik ipar perempuan', 'Isteri orang lain'],
-      correct: 1 // Kakak Kandung
-    },
-    {
-      id: 4,
-      question: 'Bilakah wali hakim boleh digunakan untuk menikahkan seseorang perempuan?',
-      options: [
-        'Apabila bapa kandung menentang pilihan anak tanpa sebab syarak (wali mujbir enggan)',
-        'Apabila tiada wali nasab langsung atau wali nasab berada jauh melebihi 2 marhalah',
-        'Apabila pengantin perempuan berumur bawah 18 tahun',
-        'Jawapan A dan B adalah betul'
-      ],
-      correct: 3 // Both A and B are valid reasons for Wali Hakim
-    }
-  ];
-
-  const handleStartQuiz = () => {
-    setShowQuiz(true);
-    setQuizStep(0);
-    setSelectedAnswer(null);
-    setScore(0);
-    setQuizFinished(false);
-  };
-
-  const handleOptionSelect = (optionIdx: number) => {
-    setSelectedAnswer(optionIdx);
-  };
-
-  const handleNext = () => {
-    if (selectedAnswer === null) return;
-
-    if (selectedAnswer === questions[quizStep].correct) {
-      setScore(prev => prev + 1);
-    }
-
-    setSelectedAnswer(null);
-    if (quizStep + 1 < questions.length) {
-      setQuizStep(prev => prev + 1);
-    } else {
-      setQuizFinished(true);
-    }
-  };
 
   return (
     <div className="space-y-10 animate-fade-in relative overflow-hidden">
@@ -1357,109 +1292,30 @@ function NikahEduPage() {
             <h3 className="font-serif text-xl font-bold">Selamat Jawab</h3>
           </div>
 
-          {!showQuiz ? (
-            <Card className="p-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 flex flex-col items-center justify-center text-center space-y-4">
-              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <UserCheck className="w-7 h-7" />
-              </div>
-              <h4 className="font-serif text-xl font-bold text-foreground">Uji Kefahaman Fiqh Nikah</h4>
-              <p className="text-xs text-muted-foreground max-w-sm leading-relaxed">
-                Jawab 4 soalan objektif ringkas berasaskan sukatan Pendidikan Islam Tingkatan 5 untuk menilai sejauh mana pemahaman anda.
+          <Card className="p-8 border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 flex flex-col items-center justify-center text-center space-y-5 min-h-[350px] relative overflow-hidden floral-card">
+            <FloralCorner className="top-0 right-0 rotate-90" />
+            <FloralCorner className="bottom-0 left-0 -rotate-90" />
+            
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary relative z-10">
+              <ClipboardList className="w-8 h-8" />
+            </div>
+            
+            <div className="space-y-2 relative z-10">
+              <h4 className="font-serif text-xl font-bold text-foreground">Kuiz Perkara Asas Perkahwinan Islam</h4>
+              <p className="text-xs text-muted-foreground max-w-sm leading-relaxed mx-auto">
+                Uji kefahaman anda mengenai hukum, rukun, dan dalil perkahwinan Islam menerusi aktiviti interaktif di platform Educaplay.
               </p>
-              <Button onClick={handleStartQuiz} className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 rounded-xl">
-                Mula Menjawab
-              </Button>
-            </Card>
-          ) : (
-            <Card className="p-6 border-2 border-primary/20 flex flex-col justify-between min-h-[350px]">
-              {/* Quiz Results */}
-              {quizFinished ? (
-                <div className="flex flex-col items-center justify-center text-center space-y-6 py-6 my-auto">
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                    <CheckCircle2 className="w-10 h-10" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-2xl font-bold text-foreground">Kuiz Selesai!</h4>
-                    <p className="text-sm text-muted-foreground mt-1">Terima kasih kerana mencuba.</p>
-                  </div>
+            </div>
 
-                  <div className="p-4 bg-muted/50 rounded-2xl w-full max-w-xs border">
-                    <span className="text-xs text-muted-foreground font-bold">SKOR ANDA:</span>
-                    <h5 className="font-serif text-4xl font-extrabold text-primary mt-1">
-                      {score} / {questions.length}
-                    </h5>
-                    <p className="text-[11px] text-muted-foreground mt-2">
-                      {score === questions.length ? 'Cemerlang! Anda sangat bersedia.' : 'Teruskan mengulang kaji video & nota di tab Isi Kandungan!'}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-3 w-full max-w-xs">
-                    <Button onClick={handleStartQuiz} variant="outline" className="flex-1 rounded-xl">
-                      Cuba Lagi
-                    </Button>
-                    <Button onClick={() => setShowQuiz(false)} className="flex-1 bg-primary text-primary-foreground rounded-xl">
-                      Tutup
-                    </Button>
-                  </div>
-                </div>
-              ) : (
-                /* Question Layout */
-                <div className="flex flex-col h-full justify-between gap-4">
-                  {/* Progress Header */}
-                  <div>
-                    <div className="flex justify-between items-center text-xs font-bold text-muted-foreground mb-2">
-                      <span>SOALAN {quizStep + 1} DARI {questions.length}</span>
-                      <span className="text-primary">{Math.round(((quizStep + 1) / questions.length) * 100)}%</span>
-                    </div>
-                    <Progress value={((quizStep + 1) / questions.length) * 100} className="h-1.5" />
-                  </div>
-
-                  {/* Question */}
-                  <div className="py-2">
-                    <p className="font-serif text-lg font-bold text-foreground leading-relaxed">
-                      {questions[quizStep].question}
-                    </p>
-                  </div>
-
-                  {/* Options */}
-                  <div className="space-y-2.5">
-                    {questions[quizStep].options.map((option, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleOptionSelect(idx)}
-                        className={`w-full text-left p-3.5 rounded-xl border text-xs md:text-sm font-medium transition-all ${
-                          selectedAnswer === idx
-                            ? 'bg-primary/10 border-primary text-primary ring-1 ring-primary'
-                            : 'bg-card border-border hover:bg-muted/40 text-foreground'
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold ${
-                            selectedAnswer === idx ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/40 text-muted-foreground'
-                          }`}>
-                            {String.fromCharCode(65 + idx)}
-                          </span>
-                          {option}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Footer Action */}
-                  <div className="pt-4 border-t flex justify-end">
-                    <Button 
-                      onClick={handleNext} 
-                      disabled={selectedAnswer === null}
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6 rounded-xl"
-                    >
-                      {quizStep + 1 === questions.length ? 'Selesai' : 'Seterusnya'}
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </Card>
-          )}
-
+            <a
+              href="https://www.educaplay.com/learning-resources/29532851-kuiz_perkara_asas_perkahwinan_islam.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-md transition-all hover:scale-[1.02] active:scale-95 z-10"
+            >
+              Mula Kuiz Educaplay <ExternalLink className="w-4 h-4" />
+            </a>
+          </Card>
         </div>
 
       </div>
