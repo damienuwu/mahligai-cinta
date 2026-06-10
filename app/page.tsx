@@ -604,13 +604,13 @@ function HomePage() {
     },
     {
       id: 2,
-      text: 'Mengaplikasikan pendekatan PAK21 berteraskan didik hibur dalam pembelajaran.',
+      text: 'Mengaplikasikan pendekatan pembelajaran digital berteraskan didik hibur dalam pembelajaran.',
       icon: Sparkles,
       color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     },
     {
       id: 3,
-      text: 'Menggabungkan inovasi teknologi bagi memperkukuh pengajaran dan pembelajaran subjek fiqh.',
+      text: 'Menggabungkan inovasi teknologi dalam pengajaran dan pembelajaran subjek fiqh bagi menarik minat pelajar.',
       icon: Award,
       color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
     }
@@ -1377,34 +1377,34 @@ function NikahEduPage() {
 function TentangKamiPage() {
   const members = [
     {
-      name: '',
+      name: 'NUR AFRINA BATRISHA BINTI AB HALIM',
       role: 'Ketua Kumpulan & Penyunting Video',
       desc: 'Menyelaras keseluruhan pembangunan aplikasi web serta mengunting video animasi Powtoon & Plotagon.',
-      initials: 'AY',
+      initials: 'NA',
       image: '/assets/tentang-kami/member1.jpg',
       color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
     },
     {
-      name: '',
+      name: 'WAN SAIDATUL SALWANI BINTI WAN AHMAD SOLAHUDDIN',
       role: 'Pereka Infografik & Komik',
       desc: 'Melakar peta minda interaktif, mengarang dialog komik pemilihan calon, dan menghasilkan visual nota fiqh.',
-      initials: 'AN',
+      initials: 'WS',
       image: '/assets/tentang-kami/member2.jpg',
       color: 'bg-pink-500/10 text-pink-600 dark:text-pink-400 border-pink-500/20'
     },
     {
-      name: '',
+      name: 'KHADIJAH BINTI IBRAHIM',
       role: 'Penyelidik Kandungan & Rujukan Syarak',
       desc: 'Memastikan kesahihan dalil hukum, menyaring sukatan Fiqh perkahwinan SPM, dan menyusun soalan kuiz.',
-      initials: 'HK',
+      initials: 'KI',
       image: '/assets/tentang-kami/member3.jpg',
       color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
     },
     {
-      name: '',
+      name: 'NUR IZZA WAHIDAH BINTI MOHAMAD ISMAIL',
       role: 'Pereka Antaramuka & Pengaturcara',
       desc: 'Membangunkan antaramuka pengguna yang responsif serta memastikan kelancaran navigasi sistem.',
-      initials: 'AA',
+      initials: 'NI',
       image: '/assets/tentang-kami/member4.jpg',
       color: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20'
     },
@@ -1439,16 +1439,16 @@ function TentangKamiPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 items-stretch justify-center">
           {members.map((member, idx) => (
             <Card key={`member-${idx}`} className="p-6 border border-border/60 hover:shadow-md transition-all text-center flex flex-col justify-between floral-card">
-              <div>
+              <div className="flex flex-col items-center">
                 {member.image ? (
-                  <div className="w-20 h-20 rounded-full mx-auto overflow-hidden border-2 border-primary/20 mb-4 bg-muted flex items-center justify-center shadow-inner relative group">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-2xl overflow-hidden border-2 border-primary/20 mb-4 bg-muted p-1 flex items-center justify-center shadow-inner relative group">
                     <img
                       src={member.image}
                       alt={member.name || member.role}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
                       onError={(e) => {
                         // If image fails or doesn't exist, hide it and display fallback initials instead.
                         (e.currentTarget as HTMLElement).style.display = 'none';
@@ -1463,23 +1463,20 @@ function TentangKamiPage() {
                   </div>
                 ) : null}
                 <div 
-                  className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center text-lg font-bold border mb-4 ${member.color}`}
+                  className={`w-28 h-28 md:w-32 md:h-32 rounded-2xl flex items-center justify-center text-xl font-bold border mb-4 ${member.color}`}
                   style={{ display: member.image ? 'none' : 'flex' }}
                 >
                   {member.initials}
                 </div>
-                <h4 className="font-serif text-base font-bold text-foreground">
-                  {member.name}
-                </h4>
-                <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider mt-1 px-2.5 py-0.5 border-primary/20 bg-primary/5 text-primary">
+                <Badge variant="outline" className="text-[9px] font-bold uppercase tracking-wider mt-1 px-2.5 py-0.5 border-primary/20 bg-primary/5 text-primary whitespace-normal text-center leading-normal">
                   {member.role}
                 </Badge>
-                <p className="text-[11px] text-muted-foreground leading-relaxed mt-4">
+                <p className="text-[11px] text-muted-foreground leading-relaxed mt-4 min-h-[66px]">
                   {member.desc}
                 </p>
               </div>
-              <div className="mt-6 pt-3 border-t text-[10px] text-muted-foreground/60 font-semibold uppercase">
-                Ahli Kumpulan 0{idx + 1}
+              <div className="mt-6 pt-3 border-t w-full text-[10px] md:text-[10.5px] text-muted-foreground/80 font-bold uppercase tracking-wider leading-relaxed whitespace-normal min-h-[64px] flex items-start justify-center text-center">
+                <span>{member.name || `Ahli Kumpulan 0${idx + 1}`}</span>
               </div>
             </Card>
           ))}

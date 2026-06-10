@@ -189,7 +189,7 @@
 /* Wedding background styling */
 .wedding-bg {
   background-image: 
-    linear-gradient(rgba(255, 245, 247, 0.90), rgba(255, 240, 243, 0.93)),
+    linear-gradient(rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.75)),
     url('/assets/floral-background.png');
   background-size: cover;
   background-position: center;
@@ -199,7 +199,7 @@
 
 .dark .wedding-bg {
   background-image: 
-    linear-gradient(rgba(25, 15, 17, 0.92), rgba(20, 12, 14, 0.95)),
+    linear-gradient(rgba(20, 12, 14, 0.70), rgba(15, 8, 10, 0.75)),
     url('/assets/floral-background.png');
   background-size: cover;
   background-position: center;
