@@ -192,19 +192,20 @@ interface InteractivePetal {
 }
 
 function FlowerFall() {
-  const [petals, setPetals] = useState<{ id: number; left: number; delay: number; duration: number; size: number; rotation: number; color: string }[]>([]);
+  const [petals, setPetals] = useState<{ id: number; left: number; delay: number; duration: number; size: number; rotation: number; color: string; type: 'petal' | 'heart' }[]>([]);
   const [bursts, setBursts] = useState<InteractivePetal[]>([]);
   const petalColors = ['text-pink-300/40', 'text-rose-300/40', 'text-amber-200/30', 'text-rose-400/20'];
 
   useEffect(() => {
-    const newPetals = Array.from({ length: 20 }).map((_, i) => ({
+    const newPetals = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 10,
       duration: 8 + Math.random() * 12,
       size: 10 + Math.random() * 18,
       rotation: Math.random() * 360,
-      color: petalColors[Math.floor(Math.random() * petalColors.length)]
+      color: petalColors[Math.floor(Math.random() * petalColors.length)],
+      type: (Math.random() > 0.4 ? 'petal' : 'heart') as 'petal' | 'heart'
     }));
     setPetals(newPetals);
   }, []);
@@ -265,7 +266,7 @@ function FlowerFall() {
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-10">
         {petals.map((petal) => (
           <div
-            key={petal.id}
+            key={`petal-${petal.id}`}
             className={`absolute ${petal.color} animate-fall animate-sway`}
             style={{
               left: `${petal.left}%`,
@@ -276,7 +277,11 @@ function FlowerFall() {
             }}
           >
             <svg width={petal.size} height={petal.size} viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C12 2 17 6 17 11C17 17 12 22 12 22C12 22 7 17 7 11C7 6 12 2 12 2Z" />
+              {petal.type === 'heart' ? (
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              ) : (
+                <path d="M12 2C12 2 17 6 17 11C17 17 12 22 12 22C12 22 7 17 7 11C7 6 12 2 12 2Z" />
+              )}
             </svg>
           </div>
         ))}
@@ -285,7 +290,7 @@ function FlowerFall() {
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-50">
         {bursts.map((p) => (
           <div
-            key={p.id}
+            key={`burst-${p.id}`}
             className="absolute"
             style={{
               left: p.x,
@@ -296,7 +301,7 @@ function FlowerFall() {
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C12 2 17 6 17 11C17 17 12 22 12 22C12 22 7 17 7 11C7 6 12 2 12 2Z" />
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
           </div>
         ))}
@@ -327,12 +332,12 @@ export default function App() {
   };
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-300 relative">
+    <div className="flex min-h-screen bg-background text-foreground transition-colors duration-300 relative wedding-bg">
       <FlowerFall />
 
       {/* Sidebar Navigation */}
       <aside 
-        className={`hidden md:flex flex-col bg-card border-r border-border fixed h-screen z-20 transition-all duration-300 ${
+        className={`hidden md:flex flex-col bg-card/80 backdrop-blur-md border-r border-border fixed h-screen z-20 transition-all duration-300 ${
           isSidebarCollapsed ? 'w-20 p-4' : 'w-72 p-6'
         }`}
       >
@@ -373,7 +378,7 @@ export default function App() {
             const isActive = currentPage === item.id || (isIsiKandungan && isTopicPage);
 
             return (
-              <div key={item.id} className="flex flex-col gap-1">
+              <div key={`nav-${item.id}`} className="flex flex-col gap-1">
                 <button
                   onClick={() => {
                     if (isIsiKandungan) {
@@ -409,7 +414,7 @@ export default function App() {
                 {isIsiKandungan && isIsiKandunganExpanded && !isSidebarCollapsed && (
                   <div className="ml-5 pl-2 border-l border-primary/20 flex flex-col gap-3 mt-1 mb-2 animate-fade-in">
                     {akadIlmuList.map((cat, catIdx) => (
-                      <div key={catIdx} className="flex flex-col gap-1">
+                      <div key={`sidebar-cat-${catIdx}`} className="flex flex-col gap-1">
                         <span className="text-[10px] font-bold text-primary/80 uppercase tracking-wider px-2 py-0.5">
                           {cat.category}
                         </span>
@@ -418,7 +423,7 @@ export default function App() {
                             const flatIdx = chapters.findIndex(c => c.title === ch.title);
                             return (
                               <button
-                                key={ch.title}
+                                key={`sidebar-topic-${ch.title}`}
                                 onClick={() => handleNavClick(`topik-${flatIdx}`)}
                                 className={`text-left text-[11px] py-1.5 px-2 rounded-lg transition-all duration-150 leading-relaxed ${
                                   currentPage === `topik-${flatIdx}`
@@ -482,7 +487,7 @@ export default function App() {
               const isActive = currentPage === item.id || (isIsiKandungan && isTopicPage);
 
               return (
-                <div key={item.id} className="flex flex-col gap-1">
+                <div key={`mobile-nav-${item.id}`} className="flex flex-col gap-1">
                   <button
                     onClick={() => {
                       if (isIsiKandungan) {
@@ -512,7 +517,7 @@ export default function App() {
                   {isIsiKandungan && isIsiKandunganExpanded && (
                     <div className="ml-6 pl-2 border-l border-primary/20 flex flex-col gap-3 mt-1 mb-2">
                       {akadIlmuList.map((cat, catIdx) => (
-                        <div key={catIdx} className="flex flex-col gap-1">
+                        <div key={`mobile-cat-${catIdx}`} className="flex flex-col gap-1">
                           <span className="text-[10px] font-bold text-primary/80 uppercase tracking-wider px-2 py-0.5">
                             {cat.category}
                           </span>
@@ -521,7 +526,7 @@ export default function App() {
                               const flatIdx = chapters.findIndex(c => c.title === ch.title);
                               return (
                                 <button
-                                  key={ch.title}
+                                  key={`mobile-topic-${ch.title}`}
                                   onClick={() => {
                                     handleNavClick(`topik-${flatIdx}`);
                                     setIsMenuOpen(false);
@@ -550,7 +555,7 @@ export default function App() {
 
       {/* Main Content Area */}
       <main 
-        className={`flex-1 min-h-screen bg-gradient-to-br from-background via-background/98 to-primary/5 transition-all duration-300 relative z-10 ${
+        className={`flex-1 min-h-screen bg-transparent transition-all duration-300 relative z-10 ${
           isSidebarCollapsed ? 'md:ml-20' : 'md:ml-72'
         }`}
       >
@@ -705,7 +710,7 @@ function HomePage() {
           {objektifList.map((obj) => {
             const Icon = obj.icon;
             return (
-              <Card key={obj.id} className="p-6 border border-border/80 hover:border-primary/30 transition-all hover:shadow-md flex flex-col justify-between relative overflow-hidden group floral-card">
+              <Card key={`obj-${obj.id}`} className="p-6 border border-border/80 hover:border-primary/30 transition-all hover:shadow-md flex flex-col justify-between relative overflow-hidden group floral-card">
                 <FloralCorner className="top-0 right-0 rotate-90" />
                 <div>
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center border mb-5 relative z-10 ${obj.color}`}>
@@ -737,7 +742,7 @@ function HomePage() {
           {sasaranList.map((sasaran, index) => {
             const Icon = sasaran.icon;
             return (
-              <Card key={index} className="overflow-hidden border border-border/60 hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between relative floral-card">
+              <Card key={`sasaran-${index}`} className="overflow-hidden border border-border/60 hover:shadow-md hover:border-primary/30 transition-all flex flex-col justify-between relative floral-card">
                 <div className={`h-1.5 bg-gradient-to-r ${sasaran.color.includes('rose') ? 'from-pink-500 to-rose-500' : sasaran.color.includes('emerald') ? 'from-emerald-500 to-teal-500' : 'from-blue-500 to-indigo-500'}`} />
                 <div className="p-6 text-center">
                   <div className="mx-auto w-12 h-12 rounded-full bg-secondary/80 flex items-center justify-center mb-4 text-primary relative z-10">
@@ -778,7 +783,7 @@ function IsiKandunganPage({ onSelectTopic }: IsiKandunganPageProps) {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {chapters.map((ch, idx) => (
           <Card 
-            key={ch.id} 
+            key={`chapter-${ch.id}`} 
             onClick={() => onSelectTopic(idx)}
             className="p-6 border border-border/80 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg shadow-sm flex flex-col justify-between cursor-pointer group relative overflow-hidden floral-card"
           >
@@ -975,7 +980,7 @@ function TopicDetailPage({ topicIndex, onNavigate, onBack }: TopicDetailPageProp
                       <div className="flex flex-col gap-8 w-full max-w-5xl">
                         {currentChapter.imageUrls.map((url: string, index: number) => (
                           <div 
-                            key={index}
+                            key={`image-${index}`}
                             className="relative group cursor-zoom-in w-full flex flex-col items-center justify-center overflow-hidden rounded-xl border bg-card shadow-md"
                             onClick={() => setExpandedImage(url)}
                           >
@@ -1301,7 +1306,7 @@ function NikahEduPage() {
 
           <div className="space-y-4">
             {links.map((link, idx) => (
-              <Card key={idx} className="p-5 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all group">
+              <Card key={`link-${idx}`} className="p-5 border border-border/60 hover:border-primary/20 hover:shadow-sm transition-all group floral-card">
                 <div className="flex justify-between items-start mb-2">
                   <Badge variant="outline" className="text-[10px] uppercase font-bold py-0.5 px-2 bg-secondary/40 text-muted-foreground">
                     {link.category}
@@ -1425,7 +1430,7 @@ function TentangKamiPage() {
         </p>
       </div>
 
-      <Card className="p-8 border border-border bg-gradient-to-br from-card via-card to-primary/5">
+      <Card className="p-8 border border-border bg-gradient-to-br from-card via-card to-primary/5 floral-card">
         <div className="max-w-2xl mx-auto text-center space-y-4 mb-10">
           <Badge className="bg-primary/10 text-primary hover:bg-primary/20 border-primary/20">Profil Kumpulan</Badge>
           <h3 className="font-serif text-2xl font-bold">Tenaga Kreatif Mahligai Cinta</h3>
@@ -1436,7 +1441,7 @@ function TentangKamiPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {members.map((member, idx) => (
-            <Card key={idx} className="p-6 border border-border/60 hover:shadow-md transition-all text-center flex flex-col justify-between">
+            <Card key={`member-${idx}`} className="p-6 border border-border/60 hover:shadow-md transition-all text-center flex flex-col justify-between floral-card">
               <div>
                 {member.image ? (
                   <div className="w-20 h-20 rounded-full mx-auto overflow-hidden border-2 border-primary/20 mb-4 bg-muted flex items-center justify-center shadow-inner relative group">

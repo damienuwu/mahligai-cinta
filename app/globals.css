@@ -186,3 +186,25 @@
   border-image: linear-gradient(to right, #e1afb9, #f7d6c8, #e1afb9) 1;
 }
 
+/* Wedding background styling */
+.wedding-bg {
+  background-image: 
+    linear-gradient(rgba(255, 245, 247, 0.90), rgba(255, 240, 243, 0.93)),
+    url('/assets/floral-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.dark .wedding-bg {
+  background-image: 
+    linear-gradient(rgba(25, 15, 17, 0.92), rgba(20, 12, 14, 0.95)),
+    url('/assets/floral-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
