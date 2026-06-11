@@ -207,4 +207,47 @@
   background-attachment: fixed;
 }
 
+/* Music Player Equalizer Animation */
+@keyframes equalize {
+  0%, 100% {
+    transform: scaleY(0.2);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
 
+.animate-equalize {
+  animation: equalize 1.2s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+/* Custom animation delays for natural wave look */
+.animation-delay-100 {
+  animation-delay: 150ms;
+}
+.animation-delay-200 {
+  animation-delay: 300ms;
+}
+.animation-delay-300 {
+  animation-delay: 450ms;
+}
+.animation-delay-400 {
+  animation-delay: 600ms;
+}
+.animation-delay-500 {
+  animation-delay: 750ms;
+}
+
+/* Slow Spin for Music disc/note */
+@keyframes spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}

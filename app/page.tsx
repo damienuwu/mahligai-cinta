@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Menu, 
   X, 
@@ -21,7 +21,11 @@ import {
   Info,
   CheckCircle2,
   FileText,
-  ArrowLeft
+  ArrowLeft,
+  Music,
+  Volume2,
+  VolumeX,
+  Pause
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -319,6 +323,36 @@ export default function App() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isIsiKandunganExpanded, setIsIsiKandunganExpanded] = useState(true);
 
+  // Background Music States
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(0.3); // Soothing lower default volume
+
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Sync volume & mute state
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+      audioRef.current.muted = isMuted;
+    }
+  }, [volume, isMuted]);
+
+  // Sync play/pause state safely
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.play().catch((err) => {
+        console.log("Play prevented by browser autoplay policy:", err);
+        setIsPlaying(false);
+      });
+    } else {
+      audio.pause();
+    }
+  }, [isPlaying]);
+
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
     { id: 'isi-kandungan', label: 'Isi Kandungan', icon: BookOpen },
@@ -334,6 +368,88 @@ export default function App() {
   return (
     <div className="flex min-h-screen bg-background text-foreground transition-colors duration-300 relative wedding-bg">
       <FlowerFall />
+
+      {/* Hidden Audio Element */}
+      <audio 
+        ref={audioRef} 
+        src="/assets/audio/wedding-ambient.mp3" 
+        loop 
+      />
+
+      {/* Floating Soothing Music Controller */}
+      <div className="fixed bottom-6 right-6 z-40 flex items-center gap-2">
+        <div className="flex items-center gap-2 bg-card/85 dark:bg-card/75 backdrop-blur-md border border-border/80 rounded-full px-4 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-primary/45 group">
+          
+          {/* Visual Equalizer Bars */}
+          <div className="flex items-end gap-[2px] h-3.5 w-3.5 mr-1 flex-shrink-0">
+            <div className={`w-[2px] bg-primary rounded-t-sm h-full origin-bottom ${isPlaying ? 'animate-equalize' : 'scale-y-[0.2]'} transition-all duration-300`} style={{ animationDelay: '0.1s' }} />
+            <div className={`w-[2px] bg-primary rounded-t-sm h-full origin-bottom ${isPlaying ? 'animate-equalize animation-delay-200' : 'scale-y-[0.4]'} transition-all duration-300`} />
+            <div className={`w-[2px] bg-primary rounded-t-sm h-full origin-bottom ${isPlaying ? 'animate-equalize animation-delay-400' : 'scale-y-[0.15]'} transition-all duration-300`} />
+            <div className={`w-[2px] bg-primary rounded-t-sm h-full origin-bottom ${isPlaying ? 'animate-equalize animation-delay-100' : 'scale-y-[0.3]'} transition-all duration-300`} />
+          </div>
+
+          {/* Track Info (expands on hover) */}
+          <div className="max-w-0 overflow-hidden group-hover:max-w-28 transition-all duration-500 ease-in-out whitespace-nowrap mr-1 flex flex-col justify-center text-left pointer-events-none">
+            <span className="text-[8px] font-bold text-primary tracking-wider uppercase leading-none">Muzik Latar</span>
+            <span className="text-[9.5px] font-medium text-muted-foreground truncate leading-tight mt-0.5">wedding-ambient.mp3</span>
+          </div>
+
+          {/* Volume Controls */}
+          <div className="relative flex items-center group/volume">
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-1 hover:text-primary transition-colors text-muted-foreground rounded-full hover:bg-secondary/80 flex-shrink-0"
+              title={isMuted ? "Aktifkan Suara" : "Senyapkan"}
+            >
+              {isMuted || volume === 0 ? (
+                <VolumeX className="w-3.5 h-3.5" />
+              ) : (
+                <Volume2 className="w-3.5 h-3.5" />
+              )}
+            </button>
+            
+            {/* Slider */}
+            <div className="max-w-0 overflow-hidden group-hover/volume:max-w-16 transition-all duration-300 ease-in-out flex items-center ml-1">
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={isMuted ? 0 : volume}
+                onChange={(e) => {
+                  setVolume(parseFloat(e.target.value));
+                  if (isMuted) setIsMuted(false);
+                }}
+                className="w-14 h-1 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+                style={{
+                  background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${
+                    (isMuted ? 0 : volume) * 100
+                  }%, var(--secondary) ${(isMuted ? 0 : volume) * 100}%, var(--secondary) 100%)`
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="w-[1px] h-4 bg-border/60 mx-0.5 flex-shrink-0" />
+
+          {/* Toggle Play/Pause */}
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className={`p-2 rounded-full transition-all duration-300 flex-shrink-0 ${
+              isPlaying 
+                ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20 scale-105 hover:bg-primary/95' 
+                : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
+            }`}
+            title={isPlaying ? "Matikan Muzik" : "Mainkan Muzik"}
+          >
+            {isPlaying ? (
+              <Pause className="w-3.5 h-3.5" />
+            ) : (
+              <Music className={`w-3.5 h-3.5 ${isPlaying ? 'animate-spin-slow' : ''}`} />
+            )}
+          </button>
+        </div>
+      </div>
 
       {/* Sidebar Navigation */}
       <aside 
@@ -445,9 +561,40 @@ export default function App() {
           })}
         </nav>
 
+        {/* Sidebar Music Toggle */}
+        <div className={`mt-auto mb-4 border-t border-border/45 pt-4 flex flex-col gap-2 ${isSidebarCollapsed ? 'items-center' : ''}`}>
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className={`flex items-center rounded-xl transition-all duration-200 ${
+              isSidebarCollapsed ? 'justify-center p-3' : 'gap-3 px-4 py-3 w-full'
+            } ${
+              isPlaying
+                ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
+                : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50 border border-transparent'
+            }`}
+            title={isPlaying ? "Matikan Muzik" : "Mainkan Muzik"}
+          >
+            {isPlaying ? (
+              <Volume2 className="w-5 h-5 flex-shrink-0 animate-pulse text-primary" />
+            ) : (
+              <VolumeX className="w-5 h-5 flex-shrink-0" />
+            )}
+            {!isSidebarCollapsed && (
+              <div className="flex flex-col items-start leading-none text-left">
+                <span className="text-sm font-medium whitespace-nowrap">
+                  {isPlaying ? 'Muzik Latar' : 'Muzik Senyap'}
+                </span>
+                <span className="text-[9px] text-muted-foreground mt-0.5">
+                  {isPlaying ? 'Sedang Dimainkan' : 'Klik untuk main'}
+                </span>
+              </div>
+            )}
+          </button>
+        </div>
+
         {/* Bottom Info Box */}
         {!isSidebarCollapsed && (
-          <div className="mt-auto p-4 bg-muted/30 rounded-2xl border border-border/50 animate-fade-in relative overflow-hidden group">
+          <div className="p-4 bg-muted/30 rounded-2xl border border-border/50 animate-fade-in relative overflow-hidden group">
             <FloralCorner className="bottom-0 right-0 w-8 h-8 opacity-10" />
             <div className="flex items-start gap-2.5">
               <Info className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
@@ -550,6 +697,31 @@ export default function App() {
               );
             })}
           </nav>
+
+          {/* Mobile Sidebar Music Toggle */}
+          <div className="mt-auto border-t border-border/40 pt-4 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="p-1.5 bg-primary/10 rounded-lg text-primary">
+                <Music className="w-5 h-5" />
+              </span>
+              <div className="text-left">
+                <p className="text-xs font-semibold text-foreground">Muzik Latar</p>
+                <p className="text-[10px] text-muted-foreground">wedding-ambient.mp3</p>
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="icon"
+              className={`rounded-full h-10 w-10 transition-all ${
+                isPlaying 
+                  ? 'bg-primary text-primary-foreground border-primary shadow-sm hover:bg-primary/95 hover:text-primary-foreground' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-secondary/60'
+              }`}
+              onClick={() => setIsPlaying(!isPlaying)}
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </Button>
+          </div>
         </SheetContent>
       </Sheet>
 
