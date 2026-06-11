@@ -1409,10 +1409,10 @@ function TentangKamiPage() {
       color: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20'
     },
     {
-      name: '',
+      name: 'MOHAMAD ILHAM AZIZI BIN MOHD ZULKEFLI',
       role: 'Penyelaras Projek & Penguji Aplikasi',
       desc: 'Menguruskan perancangan projek, mendokumentasikan laporan, serta menjalankan pengujian kebolehgunaan aplikasi.',
-      initials: 'AM',
+      initials: 'MI',
       image: '/assets/tentang-kami/member5.jpg',
       color: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     }
